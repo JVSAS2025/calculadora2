@@ -1,89 +1,71 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Calculadora de Minibodega</title>
-  <style>
-    body { font-family: sans-serif; max-width: 600px; margin: auto; padding: 20px; }
-    h1 { text-align: center; }
-    .item { display: flex; justify-content: space-between; margin: 10px 0; }
-    .container-3d {
-      margin-top: 30px; width: 300px; height: 200px;
-      border: 2px solid #aaa; perspective: 800px;
-      margin-bottom: 20px; margin-left: auto; margin-right: auto;
+<script>
+  const form = document.getElementById('calc-form');
+  const box3d = document.getElementById('box-3d');
+  const recommendation = document.getElementById('recommendation');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    // Volumen por tipo de producto (metros)
+    const vol = {
+      cajaPequena: 0.4 * 0.3 * 0.2,
+      cajaGrande: 0.6 * 0.5 * 0.4,
+      sofa2: 1.5 * 0.9 * 0.8,
+      sofa3: 2.0 * 0.9 * 0.8,
+      camaSencilla: 1.9 * 1.0 * 0.4,
+      camaDoble: 1.9 * 1.35 * 0.4,
+      tvGrande: 1.5 * 0.2 * 1.0,
+      tvPequeno: 0.8 * 0.2 * 0.6,
+      mesaGrande: 2.0 * 1.0 * 0.75,
+      mesaPequena: 1.0 * 0.5 * 0.75,
+      sillaComedor: 0.45 * 0.45 * 0.9,
+      neveraGrande: 0.7 * 0.7 * 1.8,
+      neveraPequena: 0.55 * 0.55 * 1.2
+    };
+
+    // Alturas por producto (para evaluar necesidad de espacio vertical)
+    const alturas = {
+      cajaPequena: 0.2,
+      cajaGrande: 0.4,
+      sofa2: 0.8,
+      sofa3: 0.8,
+      camaSencilla: 0.4,
+      camaDoble: 0.4,
+      tvGrande: 1.0,
+      tvPequeno: 0.6,
+      mesaGrande: 0.75,
+      mesaPequena: 0.75,
+      sillaComedor: 0.9,
+      neveraGrande: 1.8,
+      neveraPequena: 1.2
+    };
+
+    let volumenTotal = 0;
+    let alturaMaxima = 0;
+
+    for (let id in vol) {
+      const cantidad = parseInt(document.getElementById(id).value || 0);
+      volumenTotal += cantidad * vol[id];
+      if (cantidad > 0 && alturas[id] > alturaMaxima) {
+        alturaMaxima = alturas[id];
+      }
     }
-    .box {
-      width: 100%; height: 100%;
-      background: linear-gradient(135deg, #90caf9, #e3f2fd);
-      transform: rotateX(10deg) rotateY(15deg);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 24px; font-weight: bold;
-    }
-    #recommendation { font-size: 18px; font-weight: bold; text-align: center; }
-  </style>
-</head>
-<body>
 
-  <h1>Calculadora de Minibodega</h1>
+    box3d.textContent = volumenTotal.toFixed(2) + ' m³';
 
-  <form id="calc-form">
-    <div class="item"><label>Caja pequeña (40×30×20 cm)</label><input type="number" min="0" value="0" id="cajaPequena"></div>
-    <div class="item"><label>Caja grande (60×50×40 cm)</label><input type="number" min="0" value="0" id="cajaGrande"></div>
-    <div class="item"><label>Sofá 2 puestos (150×90×80 cm)</label><input type="number" min="0" value="0" id="sofa2"></div>
-    <div class="item"><label>Sofá 3 puestos (200×90×80 cm)</label><input type="number" min="0" value="0" id="sofa3"></div>
-    <div class="item"><label>Cama sencilla (190×100×40 cm)</label><input type="number" min="0" value="0" id="camaSencilla"></div>
-    <div class="item"><label>Cama doble (190×135×40 cm)</label><input type="number" min="0" value="0" id="camaDoble"></div>
-    <div class="item"><label>Televisor grande (150×20×100 cm)</label><input type="number" min="0" value="0" id="tvGrande"></div>
-    <div class="item"><label>Televisor pequeño (80×20×60 cm)</label><input type="number" min="0" value="0" id="tvPequeno"></div>
-    <div class="item"><label>Mesa grande (200×100×75 cm)</label><input type="number" min="0" value="0" id="mesaGrande"></div>
-    <div class="item"><label>Mesa pequeña (100×50×75 cm)</label><input type="number" min="0" value="0" id="mesaPequena"></div>
-    <div class="item"><label>Silla comedor (45×45×90 cm)</label><input type="number" min="0" value="0" id="sillaComedor"></div>
-    <div class="item"><label>Nevera grande (70×70×180 cm)</label><input type="number" min="0" value="0" id="neveraGrande"></div>
-    <div class="item"><label>Nevera pequeña (55×55×120 cm)</label><input type="number" min="0" value="0" id="neveraPequena"></div>
-    <button type="submit">Calcular</button>
-  </form>
+    let tamaño = '';
+    if (volumenTotal <= 2) tamaño = 'Recomendamos una minibodega de 2 m².';
+    else if (volumenTotal <= 4) tamaño = 'Recomendamos una de 4 m².';
+    else if (volumenTotal <= 6) tamaño = 'Recomendamos una de 6 m².';
+    else tamaño = 'Recomendamos una de 8 m² o más.';
 
-  <div class="container-3d">
-    <div class="box" id="box-3d">0 m³</div>
-  </div>
+    const alturaTexto = (alturaMaxima > 2)
+      ? 'Necesita una altura de más de 2 metros por al menos un objeto.'
+      : (alturaMaxima > 1)
+        ? 'Altura requerida de al menos 2 metros.'
+        : 'Altura mínima de 1 metro suficiente.';
 
-  <div id="recommendation"></div>
+    recommendation.textContent = `${tamaño} ${alturaTexto}`;
+  });
+</script>
 
-  <script>
-    const form = document.getElementById('calc-form');
-    const box3d = document.getElementById('box-3d');
-    const recommendation = document.getElementById('recommendation');
-
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-
-      // Convertir a metros cúbicos (ancho × largo × alto en metros)
-      const volumen =
-        (parseInt(cajaPequena.value || 0) * 0.04 * 0.3 * 0.2) +
-        (parseInt(cajaGrande.value || 0) * 0.6 * 0.5 * 0.4) +
-        (parseInt(sofa2.value || 0) * 1.5 * 0.9 * 0.8) +
-        (parseInt(sofa3.value || 0) * 2.0 * 0.9 * 0.8) +
-        (parseInt(camaSencilla.value || 0) * 1.9 * 1.0 * 0.4) +
-        (parseInt(camaDoble.value || 0) * 1.9 * 1.35 * 0.4) +
-        (parseInt(tvGrande.value || 0) * 1.5 * 0.2 * 1.0) +
-        (parseInt(tvPequeno.value || 0) * 0.8 * 0.2 * 0.6) +
-        (parseInt(mesaGrande.value || 0) * 2.0 * 1.0 * 0.75) +
-        (parseInt(mesaPequena.value || 0) * 1.0 * 0.5 * 0.75) +
-        (parseInt(sillaComedor.value || 0) * 0.45 * 0.45 * 0.9) +
-        (parseInt(neveraGrande.value || 0) * 0.7 * 0.7 * 1.8) +
-        (parseInt(neveraPequena.value || 0) * 0.55 * 0.55 * 1.2);
-
-      box3d.textContent = volumen.toFixed(1) + ' m³';
-
-      let tamaño = '';
-      if (volumen <= 2) tamaño = 'Recomendamos una minibodega de 2 m².';
-      else if (volumen <= 4) tamaño = 'Recomendamos una de 4 m².';
-      else if (volumen <= 6) tamaño = 'Recomendamos una de 6 m².';
-      else tamaño = 'Recomendamos una de 8 m² o más.';
-
-      recommendation.textContent = tamaño;
-    });
-  </script>
-
-</body>
-</html>
