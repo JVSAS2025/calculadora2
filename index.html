@@ -1,71 +1,137 @@
-<script>
-  const form = document.getElementById('calc-form');
-  const box3d = document.getElementById('box-3d');
-  const recommendation = document.getElementById('recommendation');
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculadora de Minibodega</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto; }
+    label { display: block; margin-top: 10px; }
+    input[type="number"] { width: 100%; padding: 8px; margin-top: 5px; }
+    button { margin-top: 20px; padding: 10px 15px; font-size: 16px; }
+    #box-3d, #recommendation { margin-top: 20px; font-weight: bold; }
+  </style>
+</head>
+<body>
 
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
+  <h1>Calculadora de Volumen para Minibodegas</h1>
 
-    // Volumen por tipo de producto (metros)
-    const vol = {
-      cajaPequena: 0.4 * 0.3 * 0.2,
-      cajaGrande: 0.6 * 0.5 * 0.4,
-      sofa2: 1.5 * 0.9 * 0.8,
-      sofa3: 2.0 * 0.9 * 0.8,
-      camaSencilla: 1.9 * 1.0 * 0.4,
-      camaDoble: 1.9 * 1.35 * 0.4,
-      tvGrande: 1.5 * 0.2 * 1.0,
-      tvPequeno: 0.8 * 0.2 * 0.6,
-      mesaGrande: 2.0 * 1.0 * 0.75,
-      mesaPequena: 1.0 * 0.5 * 0.75,
-      sillaComedor: 0.45 * 0.45 * 0.9,
-      neveraGrande: 0.7 * 0.7 * 1.8,
-      neveraPequena: 0.55 * 0.55 * 1.2
-    };
+  <form id="calc-form">
+    <label for="cajaPequena">Caja pequeña</label>
+    <input type="number" id="cajaPequena" min="0" placeholder="Cantidad">
 
-    // Alturas por producto (para evaluar necesidad de espacio vertical)
-    const alturas = {
-      cajaPequena: 0.2,
-      cajaGrande: 0.4,
-      sofa2: 0.8,
-      sofa3: 0.8,
-      camaSencilla: 0.4,
-      camaDoble: 0.4,
-      tvGrande: 1.0,
-      tvPequeno: 0.6,
-      mesaGrande: 0.75,
-      mesaPequena: 0.75,
-      sillaComedor: 0.9,
-      neveraGrande: 1.8,
-      neveraPequena: 1.2
-    };
+    <label for="cajaGrande">Caja grande</label>
+    <input type="number" id="cajaGrande" min="0" placeholder="Cantidad">
 
-    let volumenTotal = 0;
-    let alturaMaxima = 0;
+    <label for="sofa2">Sofá 2 puestos</label>
+    <input type="number" id="sofa2" min="0" placeholder="Cantidad">
 
-    for (let id in vol) {
-      const cantidad = parseInt(document.getElementById(id).value || 0);
-      volumenTotal += cantidad * vol[id];
-      if (cantidad > 0 && alturas[id] > alturaMaxima) {
-        alturaMaxima = alturas[id];
+    <label for="sofa3">Sofá 3 puestos</label>
+    <input type="number" id="sofa3" min="0" placeholder="Cantidad">
+
+    <label for="camaSencilla">Cama sencilla</label>
+    <input type="number" id="camaSencilla" min="0" placeholder="Cantidad">
+
+    <label for="camaDoble">Cama doble</label>
+    <input type="number" id="camaDoble" min="0" placeholder="Cantidad">
+
+    <label for="tvGrande">Televisor grande</label>
+    <input type="number" id="tvGrande" min="0" placeholder="Cantidad">
+
+    <label for="tvPequeno">Televisor pequeño</label>
+    <input type="number" id="tvPequeno" min="0" placeholder="Cantidad">
+
+    <label for="mesaGrande">Mesa grande</label>
+    <input type="number" id="mesaGrande" min="0" placeholder="Cantidad">
+
+    <label for="mesaPequena">Mesa pequeña</label>
+    <input type="number" id="mesaPequena" min="0" placeholder="Cantidad">
+
+    <label for="sillaComedor">Silla de comedor</label>
+    <input type="number" id="sillaComedor" min="0" placeholder="Cantidad">
+
+    <label for="neveraGrande">Nevera grande</label>
+    <input type="number" id="neveraGrande" min="0" placeholder="Cantidad">
+
+    <label for="neveraPequena">Nevera pequeña</label>
+    <input type="number" id="neveraPequena" min="0" placeholder="Cantidad">
+
+    <button type="submit">Calcular</button>
+  </form>
+
+  <p id="box-3d"></p>
+  <p id="recommendation"></p>
+
+  <script>
+    const form = document.getElementById('calc-form');
+    const box3d = document.getElementById('box-3d');
+    const recommendation = document.getElementById('recommendation');
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const vol = {
+        cajaPequena: 0.4 * 0.3 * 0.2,
+        cajaGrande: 0.6 * 0.5 * 0.4,
+        sofa2: 1.5 * 0.9 * 0.8,
+        sofa3: 2.0 * 0.9 * 0.8,
+        camaSencilla: 1.9 * 1.0 * 0.4,
+        camaDoble: 1.9 * 1.35 * 0.4,
+        tvGrande: 1.5 * 0.2 * 1.0,
+        tvPequeno: 0.8 * 0.2 * 0.6,
+        mesaGrande: 2.0 * 1.0 * 0.75,
+        mesaPequena: 1.0 * 0.5 * 0.75,
+        sillaComedor: 0.45 * 0.45 * 0.9,
+        neveraGrande: 0.7 * 0.7 * 1.8,
+        neveraPequena: 0.55 * 0.55 * 1.2
+      };
+
+      const alturas = {
+        cajaPequena: 0.2,
+        cajaGrande: 0.4,
+        sofa2: 0.8,
+        sofa3: 0.8,
+        camaSencilla: 0.4,
+        camaDoble: 0.4,
+        tvGrande: 1.0,
+        tvPequeno: 0.6,
+        mesaGrande: 0.75,
+        mesaPequena: 0.75,
+        sillaComedor: 0.9,
+        neveraGrande: 1.8,
+        neveraPequena: 1.2
+      };
+
+      let volumenTotal = 0;
+      let alturaMaxima = 0;
+
+      for (let id in vol) {
+        const cantidad = parseInt(document.getElementById(id).value || 0);
+        volumenTotal += cantidad * vol[id];
+        if (cantidad > 0 && alturas[id] > alturaMaxima) {
+          alturaMaxima = alturas[id];
+        }
       }
-    }
 
-    box3d.textContent = volumenTotal.toFixed(2) + ' m³';
+      box3d.textContent = volumenTotal.toFixed(2) + ' m³';
 
-    let tamaño = '';
-    if (volumenTotal <= 2) tamaño = 'Recomendamos una minibodega de 2 m².';
-    else if (volumenTotal <= 4) tamaño = 'Recomendamos una de 4 m².';
-    else if (volumenTotal <= 6) tamaño = 'Recomendamos una de 6 m².';
-    else tamaño = 'Recomendamos una de 8 m² o más.';
+      let tamaño = '';
+      if (volumenTotal <= 2) tamaño = 'Recomendamos una minibodega de 2 m².';
+      else if (volumenTotal <= 4) tamaño = 'Recomendamos una de 4 m².';
+      else if (volumenTotal <= 6) tamaño = 'Recomendamos una de 6 m².';
+      else tamaño = 'Recomendamos una de 8 m² o más.';
 
-    const alturaTexto = (alturaMaxima > 2)
-      ? 'Necesita una altura de más de 2 metros por al menos un objeto.'
-      : (alturaMaxima > 1)
-        ? 'Altura requerida de al menos 2 metros.'
-        : 'Altura mínima de 1 metro suficiente.';
+      const alturaTexto = (alturaMaxima > 2)
+        ? 'Necesita una altura de más de 2 metros por al menos un objeto.'
+        : (alturaMaxima > 1)
+          ? 'Altura requerida de al menos 2 metros.'
+          : 'Altura mínima de 1 metro suficiente.';
 
-    recommendation.textContent = `${tamaño} ${alturaTexto}`;
-  });
-</script>
+      recommendation.textContent = `${tamaño} ${alturaTexto}`;
+    });
+  </script>
+
+</body>
+</html>
+
 
