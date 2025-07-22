@@ -104,7 +104,6 @@
   <p id="box-3d"></p>
   <p id="recommendation"></p>
 
-  <!-- Tu script debe ir aquí, como ya lo tienes. -->
 <script>
   document.getElementById("calc-form").addEventListener("submit", function (event) {
     event.preventDefault(); // Prevenir que el formulario se recargue
@@ -133,23 +132,38 @@
     });
 
     volumenTotal = Math.round(volumenTotal * 100) / 100; // Redondear a 2 decimales
-
     document.getElementById("box-3d").textContent = `Volumen total estimado: ${volumenTotal} m³`;
 
-    let recomendacion = "Tamaño recomendado: ";
-    if (volumenTotal <= 4) {
-      recomendacion += "4 m³ (Pequeña)";
+    let recomendacion = "";
+
+    if (volumenTotal <= 2) {
+      recomendacion = "Tamaño recomendado: 2 m³";
+    } else if (volumenTotal <= 3) {
+      recomendacion = "Tamaño recomendado: 3 m³";
+    } else if (volumenTotal <= 4) {
+      recomendacion = "Tamaño recomendado: 4 m³";
+    } else if (volumenTotal <= 5) {
+      recomendacion = "Tamaño recomendado: 5 m³";
     } else if (volumenTotal <= 6) {
-      recomendacion += "6 m³ (Mediana)";
+      recomendacion = "Tamaño recomendado: 6 m³";
+    } else if (volumenTotal <= 7) {
+      recomendacion = "Tamaño recomendado: 7 m³";
+    } else if (volumenTotal <= 8) {
+      recomendacion = "Tamaño recomendado: 8 m³";
     } else if (volumenTotal <= 9) {
-      recomendacion += "9 m³ (Grande)";
+      recomendacion = "Tamaño recomendado: 9 m³";
+    } else if (volumenTotal <= 10) {
+      recomendacion = "Tamaño recomendado: 10 m³";
+    } else if (volumenTotal <= 11) {
+      recomendacion = "Tamaño recomendado: 11 m³";
     } else {
-      recomendacion += "12 m³ o más (Muy grande)";
+      recomendacion = "Tamaño recomendado: más de 11 m³ (consulta por opciones mayores)";
     }
 
     document.getElementById("recommendation").textContent = recomendacion;
   });
 </script>
+
 
 
 </body>
