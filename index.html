@@ -105,10 +105,52 @@
   <p id="recommendation"></p>
 
   <!-- Tu script debe ir aquí, como ya lo tienes. -->
-  <script>
-    // Tu script original permanece sin cambios aquí
-    // (puedes pegar el mismo que ya compartiste antes)
-  </script>
+<script>
+  document.getElementById("calc-form").addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevenir que el formulario se recargue
+
+    const items = [
+      { id: "cajaPequena", volumen: 0.4 * 0.3 * 0.2 },
+      { id: "cajaGrande", volumen: 0.6 * 0.5 * 0.4 },
+      { id: "sofa2", volumen: 1.5 * 0.9 * 0.8 },
+      { id: "sofa3", volumen: 2.0 * 0.9 * 0.8 },
+      { id: "camaSencilla", volumen: 1.9 * 1.0 * 0.4 },
+      { id: "camaDoble", volumen: 1.9 * 1.35 * 0.4 },
+      { id: "tvGrande", volumen: 1.5 * 0.2 * 1.0 },
+      { id: "tvPequeno", volumen: 0.8 * 0.2 * 0.6 },
+      { id: "mesaGrande", volumen: 2.0 * 1.0 * 0.75 },
+      { id: "mesaPequena", volumen: 1.0 * 0.5 * 0.75 },
+      { id: "sillaComedor", volumen: 0.45 * 0.45 * 0.9 },
+      { id: "neveraGrande", volumen: 0.7 * 0.7 * 1.8 },
+      { id: "neveraPequena", volumen: 0.55 * 0.55 * 1.2 }
+    ];
+
+    let volumenTotal = 0;
+
+    items.forEach(item => {
+      const cantidad = parseInt(document.getElementById(item.id).value) || 0;
+      volumenTotal += cantidad * item.volumen;
+    });
+
+    volumenTotal = Math.round(volumenTotal * 100) / 100; // Redondear a 2 decimales
+
+    document.getElementById("box-3d").textContent = `Volumen total estimado: ${volumenTotal} m³`;
+
+    let recomendacion = "Tamaño recomendado: ";
+    if (volumenTotal <= 4) {
+      recomendacion += "4 m³ (Pequeña)";
+    } else if (volumenTotal <= 6) {
+      recomendacion += "6 m³ (Mediana)";
+    } else if (volumenTotal <= 9) {
+      recomendacion += "9 m³ (Grande)";
+    } else {
+      recomendacion += "12 m³ o más (Muy grande)";
+    }
+
+    document.getElementById("recommendation").textContent = recomendacion;
+  });
+</script>
+
 
 </body>
 </html>
