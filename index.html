@@ -106,63 +106,82 @@
 
 <script>
   document.getElementById("calc-form").addEventListener("submit", function (event) {
-    event.preventDefault(); // Prevenir que el formulario se recargue
+    event.preventDefault(); // Prevenir recarga del formulario
 
     const items = [
-      { id: "cajaPequena", volumen: 0.4 * 0.3 * 0.2 },
-      { id: "cajaGrande", volumen: 0.6 * 0.5 * 0.4 },
-      { id: "sofa2", volumen: 1.5 * 0.9 * 0.8 },
-      { id: "sofa3", volumen: 2.0 * 0.9 * 0.8 },
-      { id: "camaSencilla", volumen: 1.9 * 1.0 * 0.4 },
-      { id: "camaDoble", volumen: 1.9 * 1.35 * 0.4 },
-      { id: "tvGrande", volumen: 1.5 * 0.2 * 1.0 },
-      { id: "tvPequeno", volumen: 0.8 * 0.2 * 0.6 },
-      { id: "mesaGrande", volumen: 2.0 * 1.0 * 0.75 },
-      { id: "mesaPequena", volumen: 1.0 * 0.5 * 0.75 },
-      { id: "sillaComedor", volumen: 0.45 * 0.45 * 0.9 },
-      { id: "neveraGrande", volumen: 0.7 * 0.7 * 1.8 },
-      { id: "neveraPequena", volumen: 0.55 * 0.55 * 1.2 }
+      { id: "cajaPequena", dimensiones: [0.4, 0.3, 0.2] },
+      { id: "cajaGrande", dimensiones: [0.6, 0.5, 0.4] },
+      { id: "sofa2", dimensiones: [1.5, 0.9, 0.8] },
+      { id: "sofa3", dimensiones: [2.0, 0.9, 0.8] },
+      { id: "camaSencilla", dimensiones: [1.9, 1.0, 0.4] },
+      { id: "camaDoble", dimensiones: [1.9, 1.35, 0.4] },
+      { id: "tvGrande", dimensiones: [1.5, 0.2, 1.0] },
+      { id: "tvPequeno", dimensiones: [0.8, 0.2, 0.6] },
+      { id: "mesaGrande", dimensiones: [2.0, 1.0, 0.75] },
+      { id: "mesaPequena", dimensiones: [1.0, 0.5, 0.75] },
+      { id: "sillaComedor", dimensiones: [0.45, 0.45, 0.9] },
+      { id: "neveraGrande", dimensiones: [0.7, 0.7, 1.8] },
+      { id: "neveraPequena", dimensiones: [0.55, 0.55, 1.2] }
     ];
 
     let volumenTotal = 0;
+    let areaTotal = 0;
 
     items.forEach(item => {
       const cantidad = parseInt(document.getElementById(item.id).value) || 0;
-      volumenTotal += cantidad * item.volumen;
+
+      const [a, b, c] = item.dimensiones;
+      const volumen = a * b * c;
+
+      // Calcular área usando los 2 lados más pequeños
+      const dimensionesOrdenadas = [a, b, c].sort((x, y) => x - y);
+      const area = dimensionesOrdenadas[0] * dimensionesOrdenadas[1];
+
+      volumenTotal += cantidad * volumen;
+      areaTotal += cantidad * area;
     });
 
-    volumenTotal = Math.round(volumenTotal * 100) / 100; // Redondear a 2 decimales
-    document.getElementById("box-3d").textContent = `Volumen total estimado: ${volumenTotal} m³`;
+    volumenTotal = Math.round(volumenTotal * 100) / 100;
+    areaTotal = Math.round(areaTotal * 100) / 100;
 
+    document.getElementById("box-3d").textContent = `Volumen total estimado: ${volumenTotal} m³`;
+    document.getElementById("recommendation").textContent = `Área mínima estimada: ${areaTotal} m²`;
+
+    // Recomendación de volumen por rango
     let recomendacion = "";
 
     if (volumenTotal <= 2) {
-      recomendacion = "Tamaño recomendado: 2 m³";
+      recomendacion = "Tamaño de bodega recomendado: 2 m³";
     } else if (volumenTotal <= 3) {
-      recomendacion = "Tamaño recomendado: 3 m³";
+      recomendacion = "Tamaño de bodega recomendado: 3 m³";
     } else if (volumenTotal <= 4) {
-      recomendacion = "Tamaño recomendado: 4 m³";
+      recomendacion = "Tamaño de bodega recomendado: 4 m³";
     } else if (volumenTotal <= 5) {
-      recomendacion = "Tamaño recomendado: 5 m³";
+      recomendacion = "Tamaño de bodega recomendado: 5 m³";
     } else if (volumenTotal <= 6) {
-      recomendacion = "Tamaño recomendado: 6 m³";
+      recomendacion = "Tamaño de bodega recomendado: 6 m³";
     } else if (volumenTotal <= 7) {
-      recomendacion = "Tamaño recomendado: 7 m³";
+      recomendacion = "Tamaño de bodega recomendado: 7 m³";
     } else if (volumenTotal <= 8) {
-      recomendacion = "Tamaño recomendado: 8 m³";
+      recomendacion = "Tamaño de bodega recomendado: 8 m³";
     } else if (volumenTotal <= 9) {
-      recomendacion = "Tamaño recomendado: 9 m³";
+      recomendacion = "Tamaño de bodega recomendado: 9 m³";
     } else if (volumenTotal <= 10) {
-      recomendacion = "Tamaño recomendado: 10 m³";
+      recomendacion = "Tamaño de bodega recomendado: 10 m³";
     } else if (volumenTotal <= 11) {
-      recomendacion = "Tamaño recomendado: 11 m³";
+      recomendacion = "Tamaño de bodega recomendado: 11 m³";
     } else {
-      recomendacion = "Tamaño recomendado: más de 11 m³ (consulta por opciones mayores)";
+      recomendacion = "Tamaño de bodega recomendado: más de 11 m³ (consulta por opciones mayores)";
     }
 
-    document.getElementById("recommendation").textContent = recomendacion;
+    // Mostrar recomendación adicional
+    const recomendacionExtra = document.createElement("p");
+    recomendacionExtra.style.fontWeight = "bold";
+    recomendacionExtra.textContent = recomendacion;
+    document.getElementById("recommendation").appendChild(recomendacionExtra);
   });
 </script>
+
 
 
 
