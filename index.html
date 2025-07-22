@@ -106,7 +106,7 @@
 
 <script>
   document.getElementById("calc-form").addEventListener("submit", function (event) {
-    event.preventDefault(); // Prevenir recarga del formulario
+    event.preventDefault(); // Prevenir recarga
 
     const items = [
       { id: "cajaPequena", dimensiones: [0.4, 0.3, 0.2] },
@@ -126,62 +126,41 @@
 
     let volumenTotal = 0;
     let areaTotal = 0;
+    let alturaMinimaRecomendada = 0;
 
     items.forEach(item => {
       const cantidad = parseInt(document.getElementById(item.id).value) || 0;
-
       const [a, b, c] = item.dimensiones;
-      const volumen = a * b * c;
 
-      // Calcular área usando los 2 lados más pequeños
+      const volumen = a * b * c;
       const dimensionesOrdenadas = [a, b, c].sort((x, y) => x - y);
       const area = dimensionesOrdenadas[0] * dimensionesOrdenadas[1];
+      const altura = dimensionesOrdenadas[2]; // lado más largo
 
       volumenTotal += cantidad * volumen;
       areaTotal += cantidad * area;
+
+      if (cantidad > 0 && altura > alturaMinimaRecomendada) {
+        alturaMinimaRecomendada = altura;
+      }
     });
 
     volumenTotal = Math.round(volumenTotal * 100) / 100;
     areaTotal = Math.round(areaTotal * 100) / 100;
+    alturaMinimaRecomendada = Math.round(alturaMinimaRecomendada * 100) / 100;
 
+    // Mostrar resultados
     document.getElementById("box-3d").textContent = `Volumen total estimado: ${volumenTotal} m³`;
-    document.getElementById("recommendation").textContent = `Área mínima estimada: ${areaTotal} m²`;
 
-    // Recomendación de volumen por rango
-    let recomendacion = "";
-
-    if (volumenTotal <= 2) {
-      recomendacion = "Tamaño de bodega recomendado: 2 m³";
-    } else if (volumenTotal <= 3) {
-      recomendacion = "Tamaño de bodega recomendado: 3 m³";
-    } else if (volumenTotal <= 4) {
-      recomendacion = "Tamaño de bodega recomendado: 4 m³";
-    } else if (volumenTotal <= 5) {
-      recomendacion = "Tamaño de bodega recomendado: 5 m³";
-    } else if (volumenTotal <= 6) {
-      recomendacion = "Tamaño de bodega recomendado: 6 m³";
-    } else if (volumenTotal <= 7) {
-      recomendacion = "Tamaño de bodega recomendado: 7 m³";
-    } else if (volumenTotal <= 8) {
-      recomendacion = "Tamaño de bodega recomendado: 8 m³";
-    } else if (volumenTotal <= 9) {
-      recomendacion = "Tamaño de bodega recomendado: 9 m³";
-    } else if (volumenTotal <= 10) {
-      recomendacion = "Tamaño de bodega recomendado: 10 m³";
-    } else if (volumenTotal <= 11) {
-      recomendacion = "Tamaño de bodega recomendado: 11 m³";
-    } else {
-      recomendacion = "Tamaño de bodega recomendado: más de 11 m³ (consulta por opciones mayores)";
+    // Área recomendada y altura
+    let mensaje = `Área mínima de bodega recomendada: ${areaTotal} m²`;
+    if (alturaMinimaRecomendada > 0) {
+      mensaje += ` | Altura mínima recomendada: ${alturaMinimaRecomendada} m`;
     }
 
-    // Mostrar recomendación adicional
-    const recomendacionExtra = document.createElement("p");
-    recomendacionExtra.style.fontWeight = "bold";
-    recomendacionExtra.textContent = recomendacion;
-    document.getElementById("recommendation").appendChild(recomendacionExtra);
+    document.getElementById("recommendation").textContent = mensaje;
   });
 </script>
-
 
 
 
