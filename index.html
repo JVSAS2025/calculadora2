@@ -135,22 +135,21 @@
     let areaTotal = 0;
     let alturaMinimaRecomendada = 0;
 
-    items.forEach(item => {
-      const cantidad = parseInt(document.getElementById(item.id).value) || 0;
-      const [a, b, c] = item.dimensiones;
+items.forEach(item => {
+  const cantidad = parseInt(document.getElementById(item.id).value) || 0;
+  const [a, b, c] = item.dimensiones;
 
-      const volumen = a * b * c;
-      const dimensionesOrdenadas = [a, b, c].sort((x, y) => x - y);
-      const area = dimensionesOrdenadas[0] * dimensionesOrdenadas[1];
-      const altura = dimensionesOrdenadas[2]; // lado más largo
+  const volumen = a * b * c;
+  const area = b * c;
+  const altura = a;
 
-      volumenTotal += cantidad * volumen;
-      areaTotal += cantidad * area;
+  volumenTotal += cantidad * volumen;
+  areaTotal += cantidad * area;
 
-      if (cantidad > 0 && altura > alturaMinimaRecomendada) {
-        alturaMinimaRecomendada = altura;
-      }
-    });
+  if (cantidad > 0 && altura > alturaMinimaRecomendada) {
+    alturaMinimaRecomendada = altura;
+  }
+});
 
     volumenTotal = Math.round(volumenTotal * 100) / 100;
     areaTotal = Math.round(areaTotal * 100) / 100;
