@@ -27,13 +27,13 @@
   <form id="calc-form">
 
     <div class="item">
-      <label for="cajaPequena">Caja pequeña (0.2m x 0.3m x 0.4m)</label>
+      <label for="cajaPequena">Caja pequeña (0.4m x 0.3m x 0.2m)</label>
       <input type="number" id="cajaPequena" min="0" placeholder="Cantidad">
       <img src="cajapequeña.JPG" alt="Caja pequeña" width="300">
     </div>
 
     <div class="item">
-      <label for="cajaGrande">Caja grande (0.4m x 0.5m x 0.6m)</label>
+      <label for="cajaGrande">Caja grande (0.6m x 0.5m x 0.4m)</label>
       <input type="number" id="cajaGrande" min="0" placeholder="Cantidad">
       <img src="cajagrande.JPG" alt="Caja grande">
     </div>
@@ -116,8 +116,8 @@
     event.preventDefault(); // Prevenir recarga
 
     const items = [
-      { id: "cajaPequena", dimensiones: [0.2, 0.3, 0.4] },
-      { id: "cajaGrande", dimensiones: [0.4, 0.5, 0.6] },
+      { id: "cajaPequena", dimensiones: [0.4, 0.3, 0.2] },
+      { id: "cajaGrande", dimensiones: [0.6, 0.5, 0.4] },
       { id: "sofa2", dimensiones: [0.9, 1.5, 0.8] },
       { id: "sofa3", dimensiones: [0.9, 2.0, 0.8] },
       { id: "camaSencilla", dimensiones: [1.0, 1.9, 0.55] },
